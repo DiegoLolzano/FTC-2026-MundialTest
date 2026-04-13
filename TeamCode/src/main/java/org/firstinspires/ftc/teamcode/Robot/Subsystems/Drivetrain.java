@@ -13,6 +13,10 @@ import com.seattlesolvers.solverslib.command.SubsystemBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
+/*
+* TODO: NEEDS LOCALIZATION AND PIDFs COEFFICIENT TUNING FOR AUTO USE
+*  CHECK: https://pedropathing.com/docs/pathing/tuning/localization
+*/
 public class Drivetrain extends SubsystemBase {
     HardwareMap hw;
     Telemetry tl;
