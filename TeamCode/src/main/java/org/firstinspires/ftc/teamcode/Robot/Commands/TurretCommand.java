@@ -42,9 +42,8 @@ public class TurretCommand extends CommandBase {
         double targetAngleFieldDegrees = Math.toDegrees(params.targetFieldHeading);
 
         double robotHeading = Math.toDegrees(m_drive.getPose().getHeading());
-        double relativeTarget = angleWrap(targetAngleFieldDegrees - robotHeading);
 
-        double finalSetpoint = relativeTarget;
+        double finalSetpoint = angleWrap(targetAngleFieldDegrees - robotHeading);
 
         if (finalSetpoint < MIN_LIMIT) {
             if (finalSetpoint + 360 <= MAX_LIMIT) finalSetpoint += 360;

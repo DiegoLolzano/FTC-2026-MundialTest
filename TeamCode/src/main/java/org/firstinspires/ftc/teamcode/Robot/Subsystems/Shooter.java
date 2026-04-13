@@ -53,7 +53,7 @@ public class Shooter extends SubsystemBase {
         updatePIDFCoef();
     }
 
-    public void setRPM(double RPM){
+    public void setRPM(double RPM) {
         double TICKS_PER_REV = 28; // REV HD Hex motor (no gearbox)
         double gearRatio = 1;
 
@@ -64,7 +64,14 @@ public class Shooter extends SubsystemBase {
         rightShooter.setVelocity(targetTicksPerSeconds);
     }
 
-    public double getLeftRPM(){
+    public void stopShooter() {
+        leftShooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftShooter.setPower(0.0);
+        rightShooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightShooter.setPower(0.0);
+    }
+
+    public double getLeftRPM() {
         double ticksPerSecond = leftShooter.getVelocity();// ticks/sec
         double TICKS_PER_REV = 28.0; // REV HD Hex motor (no gearbox)
         double gearRatio = 1;
@@ -72,7 +79,7 @@ public class Shooter extends SubsystemBase {
         return (ticksPerSecond * 60) / (TICKS_PER_REV * gearRatio);
     }
 
-    public double getRightRPM(){
+    public double getRightRPM() {
         double ticksPerSecond = rightShooter.getVelocity();// ticks/sec
         double TICKS_PER_REV = 28.0; // REV HD Hex motor (no gearbox)
         double gearRatio = 1;
@@ -80,7 +87,7 @@ public class Shooter extends SubsystemBase {
         return (ticksPerSecond * 60) / (TICKS_PER_REV * gearRatio);
     }
 
-    public double getAverageRPMS(){
+    public double getAverageRPMS() {
         return (getLeftRPM() + getRightRPM()) / 2;
     }
 
