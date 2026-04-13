@@ -11,10 +11,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class Intake extends SubsystemBase {
     DcMotorEx intakeRoller;
+
     //Check Servo function for correct naming
     ServoEx blockerServo;
 
     HardwareMap hw;
+
     public Intake(HardwareMap hw) {
         this.hw = hw;
 

@@ -14,6 +14,8 @@ public class Constants {
      *  VALUES THAT NEED TO BE CHECKED:
      *  -MASS
      *  -DRIVE MOTOR DIRECTIONS
+     *  -LOCALIZATION
+     *  -PIDFs CONSTANTS
      */
     public static FollowerConstants followerConstants = new FollowerConstants().mass(0.0);
 
