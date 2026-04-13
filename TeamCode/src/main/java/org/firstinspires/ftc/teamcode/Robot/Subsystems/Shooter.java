@@ -53,7 +53,7 @@ public class Shooter extends SubsystemBase {
         updatePIDFCoef();
     }
 
-    public void setRPM(int RPM){
+    public void setRPM(double RPM){
         double TICKS_PER_REV = 28; // REV HD Hex motor (no gearbox)
         double gearRatio = 1;
 
