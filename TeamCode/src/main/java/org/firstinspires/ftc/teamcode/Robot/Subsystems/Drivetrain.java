@@ -12,6 +12,7 @@ import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
 /*
 * TODO: NEEDS LOCALIZATION AND PIDFs COEFFICIENT TUNING FOR AUTO USE
@@ -24,9 +25,6 @@ public class Drivetrain extends SubsystemBase {
     Panels panels;
     static PoseHistory poseHistory;
 
-    public static double xPod = 0.0;
-    public static double  yPod = 0.0;
-
     boolean isBlueAlliance;
     boolean isClose;
     public Drivetrain(HardwareMap hw, Telemetry tl, boolean isBlueAlliance, boolean isClose){
@@ -37,9 +35,26 @@ public class Drivetrain extends SubsystemBase {
         this.isBlueAlliance = isBlueAlliance;
         this.isClose = isClose;
 
+        //CENTER OF THE STARTING CONE, BACK OF THE ROBOT IN THE WALL
+        this.m_follower.setPose(new Pose(71.0, 7.5, Math.toRadians(45)));
+
         setSubsystem("Drivetrain");
 
         m_follower.getPoseTracker();
+    }
+
+    public void drawCurrent() {
+        try {
+            Drawing.drawRobot(m_follower.getPose());
+            Drawing.sendPacket();
+        } catch (Exception e) {
+            throw new RuntimeException("Drawing failed " + e);
+        }
+    }
+
+    public void drawCurrentAndHistory() {
+        Drawing.drawPoseHistory(poseHistory);
+        drawCurrent();
     }
 
     public void startPose(Pose pose) {m_follower.setStartingPose(pose);}
@@ -83,6 +98,8 @@ public class Drivetrain extends SubsystemBase {
     }
 
     @Override
-    public void periodic() {}
+    public void periodic() {
+        m_follower.update();
+    }
 
 }

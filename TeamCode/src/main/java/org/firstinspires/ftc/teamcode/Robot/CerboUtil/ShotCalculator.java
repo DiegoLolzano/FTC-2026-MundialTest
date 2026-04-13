@@ -29,9 +29,14 @@ public class ShotCalculator {
 
     //TUNE INTERPOLATION
     static {
-        flywheelRPMMap.put(new InterpolatingDouble(0.0), new InterpolatingDouble(0.0));
+        flywheelRPMMap.put(new InterpolatingDouble(39.0), new InterpolatingDouble(2820.00));//2520
+        flywheelRPMMap.put(new InterpolatingDouble(83.0), new InterpolatingDouble(3225.00));//2820
+        flywheelRPMMap.put(new InterpolatingDouble(142.0), new InterpolatingDouble(3650.00));//3765
 
-        timeOfFlightMap.put(new InterpolatingDouble(0.0), new InterpolatingDouble(0.0));
+        //TUNE WITH THIS VALUES
+        timeOfFlightMap.put(new InterpolatingDouble(39.0), new InterpolatingDouble(0.0));//2520
+        timeOfFlightMap.put(new InterpolatingDouble(83.0), new InterpolatingDouble(0.0));//2820
+        timeOfFlightMap.put(new InterpolatingDouble(142.0), new InterpolatingDouble(0.0));//3765
     }
 
     public ShotCalculator() {}

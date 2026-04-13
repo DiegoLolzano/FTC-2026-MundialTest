@@ -44,7 +44,7 @@ public class TestTeleOp extends CommandOpMode {
         leftTrigger = new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.1);
         rightTrigger = new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.1);
 
-        testGoal = new Pose2d(0.0, 0.0, Math.toDegrees(0.0));
+        testGoal = new Pose2d(12.5, 134, Math.toDegrees(0.0));
 
         m_drive.setDefaultCommand(new DriveCommand(m_drive,
                 g1::getLeftX,

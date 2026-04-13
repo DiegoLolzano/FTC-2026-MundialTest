@@ -14,25 +14,15 @@ import org.firstinspires.ftc.teamcode.Robot.CerboUtil.Interpolation.Interpolatin
 public class Shooter extends SubsystemBase {
     //CHECK IF ITS RIGHT/LEFT OR UPPER/LOWER SHOOTER MOTOR
     DcMotorEx leftShooter, rightShooter;
-
     HardwareMap hw;
-
     Telemetry tl;
 
-    public static double kP = 0.0,
+    public static double kP = 16.0,
                          kI = 0.0,
                          kD = 0.0,
-                         kF = 0.0;
+                         kF = 13.0;
 
     private double oldP, oldI, oldD, oldF;
-
-    static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble>
-            kDistanceToShooterSpeed = new InterpolatingTreeMap<>();
-
-    static {
-        //DISTANCE AND SHOOTER SPEED RESPECTIVELY, TUNE AND CHECK FOR VALUES
-        kDistanceToShooterSpeed.put(new InterpolatingDouble(0.0), new InterpolatingDouble(0.0));
-    }
 
     public Shooter(HardwareMap hw, Telemetry tl) {
         this.hw = hw;
@@ -97,10 +87,6 @@ public class Shooter extends SubsystemBase {
             leftShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, newPid);
             rightShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, newPid);
         }
-    }
-
-    public double getInterpolatedShooterSpeed(double distance) {
-        return kDistanceToShooterSpeed.getInterpolated(new InterpolatingDouble(distance)).value;
     }
 
     @Override

@@ -12,9 +12,9 @@ public class Turret extends SubsystemBase {
     HardwareMap hw;
     Telemetry tl;
 
-    public static double kP = 0.0,
+    public static double kP = 0.025,
             kI = 0.0,
-            kD = 0.0;
+            kD = 0.0018;
 
     public static PIDController pidController = new PIDController(kP, kI, kD);
 
@@ -43,12 +43,6 @@ public class Turret extends SubsystemBase {
         double gearRatio = 5;
         double ticksPerTurretRev = motorTicksPerRev * gearRatio;
         return ((ticks / ticksPerTurretRev) * 360);
-    }
-
-    private double normalizeDegrees(double angleDeg) {
-        double normalizedDeg = angleDeg % 360;
-        if(normalizedDeg < 0) normalizedDeg += 360;
-        return normalizedDeg;
     }
 
     @Override
