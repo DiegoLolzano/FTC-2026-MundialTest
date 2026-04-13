@@ -29,7 +29,7 @@ public class Intake extends SubsystemBase {
     }
 
     /* INTAKE ROLLER */
-    public void IntakeRoller() {
+    public void intakeRoller() {
         intakeRoller.setPower(.88);
     }
 
