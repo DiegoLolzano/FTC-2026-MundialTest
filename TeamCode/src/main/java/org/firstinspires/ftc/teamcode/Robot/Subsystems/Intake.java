@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class Intake extends SubsystemBase {
@@ -16,9 +17,11 @@ public class Intake extends SubsystemBase {
     ServoEx blockerServo;
 
     HardwareMap hw;
+    Telemetry tl;
 
-    public Intake(HardwareMap hw) {
+    public Intake(HardwareMap hw, Telemetry tl) {
         this.hw = hw;
+        this.tl = tl;
 
         intakeRoller = hw.get(DcMotorEx.class, "intakeRoller");
         intakeRoller.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -60,5 +63,10 @@ public class Intake extends SubsystemBase {
 
     public void overrideBlockerAngle(double angle) {
         blockerServo.set(angle);
+    }
+
+    @Override
+    public void periodic() {
+        tl.addData("Blocker Angle", blockerServo.get());
     }
 }

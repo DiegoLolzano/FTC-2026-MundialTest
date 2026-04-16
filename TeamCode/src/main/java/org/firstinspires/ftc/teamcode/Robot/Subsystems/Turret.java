@@ -12,9 +12,9 @@ public class Turret extends SubsystemBase {
     HardwareMap hw;
     Telemetry tl;
 
-    public static double kP = 0.025,
+    public static double kP = 0.021,
             kI = 0.0,
-            kD = 0.0018;
+            kD = 0.003;
 
     public static PIDController pidController = new PIDController(kP, kI, kD);
 
@@ -45,14 +45,31 @@ public class Turret extends SubsystemBase {
         return ((ticks / ticksPerTurretRev) * 360);
     }
 
+    public void stopTurret() {
+        turretMotor.setPower(0.0);
+    }
+
+    public void overrideTurretLeft() {
+        turretMotor.setPower(0.3);
+    }
+
+    public void overrideTurretRight() {
+        turretMotor.setPower(-0.3);
+    }
+
     @Override
     public void periodic() {
         double currentDegrees = -ticksToDegrees();
 
-        pidController.setPID(kP, Math.abs(pidController.getPositionError()) < 0.9 ? 0:kI, kD);
+        pidController.setPID(kP, Math.abs(pidController.getPositionError()) < 0.6 ? 0:kI, kD);
 
-        double power = pidController.calculate(currentDegrees);
+        //double power = pidController.calculate(currentDegrees);
 
-        turretMotor.setPower(power);
+        if(pidMode) {
+            turretMotor.setPower(0.0);
+        }
+
+        tl.addData("Turret Position Ticks", turretMotor.getCurrentPosition());
+        tl.addData("Turret Angle Deg", currentDegrees);
     }
 }

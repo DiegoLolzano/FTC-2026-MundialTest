@@ -25,13 +25,13 @@ public class Constants {
      *  -PIDFs CONSTANTS
      */
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(12.5)
-            .forwardZeroPowerAcceleration(-51.54322464112613)
-            .lateralZeroPowerAcceleration(-110.48020786969806)
-            .translationalPIDFCoefficients(new PIDFCoefficients(0,0,0,0))//.translationalPIDFCoefficients(new PIDFCoefficients(0.11,0,0.009,0.044))
-            .headingPIDFCoefficients(new PIDFCoefficients(0,0,0,0))
-            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0, 0, 0, 0, 0))
-            .centripetalScaling(0.005);
+            .mass(11.5)
+            .forwardZeroPowerAcceleration(-30.74650453781977)
+            .lateralZeroPowerAcceleration(-74.88549106855973)
+            .translationalPIDFCoefficients(new PIDFCoefficients(0.09, 0, 0.005, 0))//.translationalPIDFCoefficients(new PIDFCoefficients(0.11,0,0.009,0.044))
+            .headingPIDFCoefficients(new PIDFCoefficients(1.5, 0, 0.1, 0))
+            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.0072, 0, 0.00008, 0, 0))
+            .centripetalScaling(0.001);
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
@@ -39,13 +39,13 @@ public class Constants {
             .rightRearMotorName("rr")
             .leftFrontMotorName("lf")
             .leftRearMotorName("lr")
-            .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)//FORWARD)
+            .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE)//REVERSE)
+            .leftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)//FORWARD)
+                .leftRearMotorDirection(DcMotorSimple.Direction.FORWARD)//FORWARD)
             .useBrakeModeInTeleOp(true)
-            .xVelocity(77.79242183655266)
-            .yVelocity(52.73848838505783);
+            .xVelocity(71.03902933916709)
+            .yVelocity(46.70697742372048);
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
             .forwardPodY(-4.33)//6.08
@@ -70,9 +70,9 @@ public class Constants {
 
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)
+                .pinpointLocalizer(localizerConstants)
                 .pathConstraints(pathConstraints)
                 .mecanumDrivetrain(driveConstants)
-                .pinpointLocalizer(localizerConstants)
                 .build();
     }
 }

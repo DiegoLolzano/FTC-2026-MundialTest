@@ -35,7 +35,7 @@ public class TestTeleOp extends CommandOpMode {
     @Override
     public void initialize() {
         m_drive = new Drivetrain(hardwareMap, telemetry, true, true);
-        m_intake = new Intake(hardwareMap);
+        m_intake = new Intake(hardwareMap, telemetry);
         m_shooter = new Shooter(hardwareMap, telemetry);
         m_turret = new Turret(hardwareMap, telemetry);
 
@@ -47,9 +47,9 @@ public class TestTeleOp extends CommandOpMode {
         testGoal = new Pose2d(12.5, 134, Math.toDegrees(0.0));
 
         m_drive.setDefaultCommand(new DriveCommand(m_drive,
-                g1::getLeftX,
                 g1::getLeftY,
-                g1::getRightY));
+                g1::getLeftX,
+                g1::getRightX));
 
         //CHECK TURRET LOOKAHEAD POSITION
         m_turret.setDefaultCommand(new TurretCommand(m_drive,
@@ -58,21 +58,21 @@ public class TestTeleOp extends CommandOpMode {
                 testGoal));
 
         g1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-                .whileHeld(new RunCommand(() -> m_intake.intakeRoller(), m_intake))
+                .whileHeld(new RunCommand(() -> m_intake.intakeRoller()))
                 .whenReleased(new RunCommand(() -> m_intake.stopRoller()));
 
         rightTrigger
-                .whileActiveContinuous(new RunCommand(() -> m_intake.outtakeRoller(), m_intake))
-                .whenInactive(new RunCommand(() -> m_intake.stopRoller(), m_intake));
+                .whileActiveContinuous(new RunCommand(() -> m_intake.outtakeRoller()))
+                .whenInactive(new RunCommand(() -> m_intake.stopRoller()));
 
         g1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
                 .whileHeld(new ParallelCommandGroup(
-                        new RunCommand(() -> m_intake.feedShooter(), m_intake),
-                        new RunCommand(() -> m_intake.openShooterPath(), m_intake)
+                        new RunCommand(() -> m_intake.feedShooter()),
+                        new RunCommand(() -> m_intake.openShooterPath())
                 ))
                 .whenReleased(new ParallelCommandGroup(
-                        new RunCommand(() -> m_intake.blockShooterPath(), m_intake),
-                        new RunCommand(() -> m_intake.stopRoller(), m_intake)
+                        new RunCommand(() -> m_intake.blockShooterPath()),
+                        new RunCommand(() -> m_intake.stopRoller())
                 ));
 
         //CHECK DRIVE TO TARGET DISTANCE
@@ -86,8 +86,16 @@ public class TestTeleOp extends CommandOpMode {
                     if (params.isValid) {
                         m_shooter.setRPM((int) params.flywheelRPM);
                     }
-                }, m_shooter))
-                .whenInactive(new InstantCommand(() -> m_shooter.stopShooter(), m_shooter));
+                }))
+                .whenInactive(new InstantCommand(() -> m_shooter.stopShooter()));
+
+        g1.getGamepadButton(GamepadKeys.Button.DPAD_LEFT)
+                        .whileHeld(() -> m_turret.overrideTurretLeft())
+                                .whenReleased(() -> m_turret.stopTurret());
+
+        g1.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
+                .whileHeld(() -> m_turret.overrideTurretRight())
+                .whenReleased(() -> m_turret.stopTurret());
 
         schedule(new RunCommand(() -> {
             telemetry.update();

@@ -14,6 +14,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
+import java.util.Locale;
+
 /*
 * TODO: NEEDS LOCALIZATION AND PIDFs COEFFICIENT TUNING FOR AUTO USE
 *  CHECK: https://pedropathing.com/docs/pathing/tuning/localization
@@ -73,9 +75,9 @@ public class Drivetrain extends SubsystemBase {
 
     public void drive(double x, double y, double turn) {
         if(isBlueAlliance) {
-            m_follower.setTeleOpDrive(x, y, turn, false);
+            m_follower.setTeleOpDrive(y, x, turn, true);
         } else {
-            m_follower.setTeleOpDrive(-x, -y, turn, false);
+            m_follower.setTeleOpDrive(-y, -x, turn, true);
         }
     }
 
@@ -100,6 +102,40 @@ public class Drivetrain extends SubsystemBase {
     @Override
     public void periodic() {
         m_follower.update();
+
+        double headingDeg = normalizeDegrees(getPose().getHeading() * 180 / Math.PI);
+
+        String pose = String.format(
+                Locale.US,
+                "Y: %.3f, X: %.3f, H: %.3f",
+                getPose().getY(),
+                getPose().getX(),
+                headingDeg
+        );
+
+
+        drawCurrentAndHistory();
+        String velocity = String.format(
+                Locale.US,
+                "X: %.3f, Y: %.3f, Magnitude: %.3f",
+                getVelocity().getXComponent(),
+                getVelocity().getYComponent(),
+                getVelocity().getMagnitude()
+        );
+
+        tl.addData(getSubsystem(), pose);
+        tl.addData(getSubsystem(), velocity);
+       // tl.addData("Distancia a Rojo", obtenerDistanciaTarget(false));
+        //tl.addData("Distancia a Azul", obtenerDistanciaTarget(true));
+
+        tl.addData("AngularVel", m_follower.getAngularVelocity());
+
+        /*if(obtenerDistanciaTarget(true) > 100){
+
+        }*/
+
+        drawCurrentAndHistory();
+
     }
 
 }

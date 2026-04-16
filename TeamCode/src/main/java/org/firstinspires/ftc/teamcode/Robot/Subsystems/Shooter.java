@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Robot.CerboUtil.Interpolation.Interpolatin
 
 public class Shooter extends SubsystemBase {
     //CHECK IF ITS RIGHT/LEFT OR UPPER/LOWER SHOOTER MOTOR
-    DcMotorEx leftShooter, rightShooter;
+    DcMotorEx lowerShooter, upperShooter;
     HardwareMap hw;
     Telemetry tl;
 
@@ -28,17 +28,17 @@ public class Shooter extends SubsystemBase {
         this.hw = hw;
         this.tl = tl;
 
-        leftShooter = hw.get(DcMotorEx.class, "leftShooter");
-        leftShooter.setDirection(DcMotorSimple.Direction.FORWARD);
-        PIDFCoefficients pidOrig = leftShooter.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+        lowerShooter = hw.get(DcMotorEx.class, "lowerShooter");
+        lowerShooter.setDirection(DcMotorSimple.Direction.FORWARD);
+        PIDFCoefficients pidOrig = lowerShooter.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
         PIDFCoefficients pidfCoef = new PIDFCoefficients(kP, kI, kD, kF);
-        leftShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoef);
+        lowerShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoef);
         
-        rightShooter = hw.get(DcMotorEx.class, "rightShooter");
-        rightShooter.setDirection(DcMotorSimple.Direction.REVERSE);
-        PIDFCoefficients pidOrig2 = rightShooter.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+        upperShooter = hw.get(DcMotorEx.class, "upperShooter");
+        upperShooter.setDirection(DcMotorSimple.Direction.REVERSE);
+        PIDFCoefficients pidOrig2 = upperShooter.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
         //CHECK IF WE NEED TWO PIDFs VALUES FOR EACH SHOOTER
-        rightShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoef);
+        upperShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoef);
 
         updatePIDFCoef();
     }
@@ -48,21 +48,21 @@ public class Shooter extends SubsystemBase {
         double gearRatio = 1;
 
         double targetTicksPerSeconds = (RPM * TICKS_PER_REV * gearRatio) / 60;
-        leftShooter.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        leftShooter.setVelocity(targetTicksPerSeconds);
-        rightShooter.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        rightShooter.setVelocity(targetTicksPerSeconds);
+        lowerShooter.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        lowerShooter.setVelocity(targetTicksPerSeconds);
+        lowerShooter.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        lowerShooter.setVelocity(targetTicksPerSeconds);
     }
 
     public void stopShooter() {
-        leftShooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftShooter.setPower(0.0);
-        rightShooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightShooter.setPower(0.0);
+        lowerShooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lowerShooter.setPower(0.0);
+        lowerShooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lowerShooter.setPower(0.0);
     }
 
     public double getLeftRPM() {
-        double ticksPerSecond = leftShooter.getVelocity();// ticks/sec
+        double ticksPerSecond = lowerShooter.getVelocity();// ticks/sec
         double TICKS_PER_REV = 28.0; // REV HD Hex motor (no gearbox)
         double gearRatio = 1;
 
@@ -70,7 +70,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getRightRPM() {
-        double ticksPerSecond = rightShooter.getVelocity();// ticks/sec
+        double ticksPerSecond = upperShooter.getVelocity();// ticks/sec
         double TICKS_PER_REV = 28.0; // REV HD Hex motor (no gearbox)
         double gearRatio = 1;
 
@@ -84,8 +84,8 @@ public class Shooter extends SubsystemBase {
     public void updatePIDFCoef() {
         if(kP != oldP || kI != oldI || kD != oldD || kF != oldF) {
             PIDFCoefficients newPid = new PIDFCoefficients(kP, kI, kD, kF);
-            leftShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, newPid);
-            rightShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, newPid);
+            lowerShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, newPid);
+            upperShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, newPid);
         }
     }
 
@@ -93,8 +93,8 @@ public class Shooter extends SubsystemBase {
     public void periodic() {
         updatePIDFCoef();
 
-        tl.addData("Left Shooter RPMs", getLeftRPM());
-        tl.addData("Right Shooter RPMs", getRightRPM());
+        tl.addData("Lower Shooter RPMs", getLeftRPM());
+        tl.addData("Upper Shooter RPMs", getRightRPM());
         tl.addData("Average RPMs", getAverageRPMS());
 
     }

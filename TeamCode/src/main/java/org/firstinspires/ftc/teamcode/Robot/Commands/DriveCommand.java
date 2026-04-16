@@ -11,10 +11,10 @@ public class DriveCommand extends CommandBase {
     private DoubleSupplier x, y, turn;
     //private boolean robotCentric;
 
-    public DriveCommand(Drivetrain m_drive, DoubleSupplier x, DoubleSupplier y, DoubleSupplier turn) {
+    public DriveCommand(Drivetrain m_drive, DoubleSupplier y, DoubleSupplier x, DoubleSupplier turn) {
         this.m_drive = m_drive;
-        this.x = x;
         this.y = y;
+        this.x = x;
         this.turn = turn;
 
         addRequirements(m_drive);
@@ -28,7 +28,7 @@ public class DriveCommand extends CommandBase {
     @Override
     public void execute() {
         //Check controller values and correct as needed
-        m_drive.drive(x.getAsDouble(), y.getAsDouble(), turn.getAsDouble());
+        m_drive.drive(y.getAsDouble(), x.getAsDouble(), turn.getAsDouble());
     }
 
     @Override
